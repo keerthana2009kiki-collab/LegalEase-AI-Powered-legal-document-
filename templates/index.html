@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>{{ app_name }}</title>
+  <link rel="stylesheet" href="/static/css/style.css"/>
+</head>
+<body>
+  <nav class="nav"><span class="logo">⚖️ {{ app_name }}</span><a href="/">Home</a></nav>
+  <div class="container">
+    <div class="hero">
+      <h1>Understand legal text simply</h1>
+      <p>Paste a clause or short document. Gemini explains it in plain English and flags things to watch.</p>
+    </div>
+    <div class="fallback">⚠️ {{ disclaimer }}</div>
+    <div class="card">
+      <form method="post" action="/simplify">
+        <label>Legal text / clause *</label>
+        <textarea name="legal_text" required placeholder="Paste rental agreement clause, terms of service section, employment clause, etc."></textarea>
+        <button class="btn btn-block" type="submit">🔍 Simplify</button>
+      </form>
+    </div>
+  </div>
+  <footer>{{ app_name }} · Educational only · Not legal advice</footer>
+</body>
+</html>

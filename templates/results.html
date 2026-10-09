@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Results – {{ app_name }}</title>
+  <link rel="stylesheet" href="/static/css/style.css"/>
+</head>
+<body>
+  <nav class="nav"><span class="logo">⚖️ {{ app_name }}</span><a href="/">Home</a></nav>
+  <div class="container">
+    <div class="fallback">⚠️ {{ disclaimer }}</div>
+    {% if result.is_fallback %}<div class="fallback">Demo mode — set GEMINI_API_KEY for live AI analysis.</div>{% endif %}
+
+    <div class="card">
+      <h3>Summary</h3>
+      <p>{{ result.summary }}</p>
+    </div>
+
+    {% if result.clauses %}
+    <h2 style="margin:1rem 0 .5rem">Clause breakdown</h2>
+    {% for c in result.clauses %}
+    <div class="card">
+      <h3>{{ c.title }}</h3>
+      <p>{{ c.plain_english }}</p>
+      {% if c.original_snippet %}<p style="color:var(--muted);font-size:.85rem;margin-top:.5rem"><em>“{{ c.original_snippet }}”</em></p>{% endif %}
+    </div>
+    {% endfor %}
+    {% endif %}
+
+    {% if result.red_flags %}
+    <div class="card">
+      <h3>Things to watch (red flags)</h3>
+      <ul>{% for r in result.red_flags %}<li>{{ r }}</li>{% endfor %}</ul>
+    </div>
+    {% endif %}
+
+    {% if result.key_obligations %}
+    <div class="card">
+      <h3>Key obligations</h3>
+      <ul>{% for o in result.key_obligations %}<li>{{ o }}</li>{% endfor %}</ul>
+    </div>
+    {% endif %}
+
+    {% if qa %}
+    <div class="card">
+      <h3>Q: {{ qa.question }}</h3>
+      <p>{{ qa.answer }}</p>
+      <p style="font-size:.8rem;color:var(--muted);margin-top:.5rem">{{ qa.disclaimer }}</p>
+    </div>
+    {% endif %}
+
+    <div class="card">
+      <h3>Ask a follow-up</h3>
+      <form method="post" action="/ask">
+        <input type="hidden" name="legal_text" value="{{ legal_text }}"/>
+        <input type="hidden" name="prior_summary" value="{{ result.summary }}"/>
+        <label>Your question</label>
+        <input name="question" required placeholder="e.g. What if I leave early?"/>
+        <button class="btn" type="submit">Ask</button>
+      </form>
+    </div>
+
+    <p style="margin:1.5rem 0"><a class="btn" href="/">← New text</a></p>
+  </div>
+</body>
+</html>
